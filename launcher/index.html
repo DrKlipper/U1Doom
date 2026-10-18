@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>U1 DOOM</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23c4171d'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='900' font-size='15' fill='%23ffc542' text-anchor='middle'%3EU1%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Start screen -->
+  <section class="intro" aria-label="Start">
+    <img class="intro-art" src="title.png" alt="Der DOOM-Marine bricht aus einem Snapmaker U1, ringsum Höllenfeuer und Dämonen">
+    <p class="byline">by <b>Dr. Klipper</b></p>
+    <div class="intro-content">
+      <div>
+        <h1><span>If it has a display,</span> it runs DOOM.</h1>
+        <p class="lead">In drei Schritten: kopieren, koppeln, losspielen.</p>
+      </div>
+      <button id="go" class="btn btn-fire btn-xl" autofocus>Los geht’s
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Wizard -->
+  <div class="app">
+    <header class="top">
+      <button id="home" class="brand" title="Zum Startbild">
+        <span class="brand-logo"></span>
+        <span>U1 <b>DOOM</b></span>
+      </button>
+      <div class="top-right">
+        <p class="byline">by <b>Dr. Klipper</b></p>
+        <span id="conn" class="pill status status--off">Nicht verbunden</span>
+      </div>
+    </header>
+
+    <nav class="steps" aria-label="Schritte">
+      <button class="step" data-step="0">
+        <span class="num"><span>1</span><svg class="check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+        <span class="step-label">Einrichten<small>Drucker verbinden, Dateien kopieren</small></span>
+      </button>
+      <button class="step" data-step="1">
+        <span class="num"><span>2</span><svg class="check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+        <span class="step-label">Bluetooth<small>Controller und Lautsprecher</small></span>
+      </button>
+      <button class="step" data-step="2">
+        <span class="num"><span>3</span><svg class="check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+        <span class="step-label">Spielen<small>Spiel wählen und starten</small></span>
+      </button>
+    </nav>
+
+    <main>
+      <!-- 1: Setup -->
+      <section class="panel" data-panel="0">
+        <div class="panel-head">
+          <h2>Einrichten</h2>
+          <p>Der Rechner verbindet sich per SSH mit dem U1 und kopiert DOOM nach <code>/userdata/doom</code>.</p>
+        </div>
+
+        <div class="block">
+          <h3>Drucker</h3>
+          <div class="connect-row">
+            <label class="field">IP-Adresse
+              <input id="host" class="input" placeholder="z. B. 192.168.1.50" autocomplete="off">
+            </label>
+            <label class="field">Passwort
+              <input id="password" class="input" type="password" placeholder="leer: Standardpasswort">
+            </label>
+            <button id="connect" class="btn">Verbinden</button>
+          </div>
+          <p id="conn-msg" class="msg"></p>
+          <p class="hint">Am Touchscreen des U1 muss Root Access eingeschaltet sein.</p>
+        </div>
+
+        <div class="block">
+          <h3>Dateien</h3>
+          <ul id="files" class="files"></ul>
+          <div class="row">
+            <button id="install" class="btn btn-fire">Auf den Drucker kopieren</button>
+            <span id="install-ok" class="status" hidden>Alles aktuell auf dem Drucker</span>
+            <span id="install-msg" class="msg"></span>
+          </div>
+          <div id="progress" class="progress" hidden><span id="progress-bar"></span></div>
+          <p class="hint">Kopiert wird nur, was fehlt oder sich geändert hat.</p>
+        </div>
+
+        <footer class="panel-foot">
+          <span></span>
+          <button class="btn" data-go="1">Weiter
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </footer>
+      </section>
+
+      <!-- 2: Bluetooth -->
+      <section class="panel" data-panel="1" hidden>
+        <div class="panel-head">
+          <h2>Bluetooth</h2>
+          <p>PS5-Controller und Lautsprecher mit dem U1 koppeln. Der Lautsprecher ist freiwillig.</p>
+        </div>
+        <p class="notice"></p>
+
+        <div class="slots">
+          <div id="slot-pad" class="slot">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 7h10a5 5 0 0 1 4.9 6l-.8 4a2.5 2.5 0 0 1-4.3 1.2L14.5 16h-5l-2.3 2.2A2.5 2.5 0 0 1 2.9 17l-.8-4A5 5 0 0 1 7 7Zm0 3v1.5H5.5v1H7V14h1v-1.5h1.5v-1H8V10H7Zm9.5 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm-2 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg>
+            <div><span class="slot-kind">Controller</span><span class="slot-name">…</span><span class="status status--off"></span></div>
+          </div>
+          <div id="slot-audio" class="slot">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4V9Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Zm-2.5-8v2a7 7 0 0 1 0 12v2a9 9 0 0 0 0-16Z"/></svg>
+            <div><span class="slot-kind">Lautsprecher</span><span class="slot-name">…</span><span class="status status--off"></span></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="bar">
+            <h3>Geräte</h3>
+            <span id="adapter" class="status status--off">…</span>
+            <button id="scan" class="btn btn-small">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+              Suchen
+            </button>
+          </div>
+          <p id="bt-msg" class="msg"></p>
+          <ul id="devices" class="devices"></ul>
+        </div>
+
+        <div class="tips">
+          <div><b>PS5-Controller</b>Create und PS gedrückt halten, bis die Lichtleiste schnell blinkt. Dann „Suchen“ und „Koppeln“. Später reicht die PS-Taste.</div>
+          <div><b>Lautsprecher</b>In den Kopplungsmodus bringen, dann „Suchen“ und „Koppeln“. Der Ton geht an den zuletzt verbundenen Lautsprecher.</div>
+        </div>
+
+        <footer class="panel-foot">
+          <button class="btn btn-ghost" data-go="0">Zurück</button>
+          <button class="btn" data-go="2">Weiter
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </footer>
+      </section>
+
+      <!-- 3: Play -->
+      <section class="panel" data-panel="2" hidden>
+        <div class="panel-head">
+          <h2>Spielen</h2>
+          <p>DOOM läuft auf dem Display des U1. Die Soundeffekte kommen über den Bluetooth-Lautsprecher, Musik gibt es keine.</p>
+        </div>
+        <p class="notice"></p>
+
+        <div id="wads" class="wads" role="radiogroup" aria-label="Spiel"></div>
+
+        <div class="play-bar">
+          <button id="start" class="btn btn-fire btn-xl">DOOM starten</button>
+          <button id="stop" class="btn">Beenden</button>
+          <span id="play-state" class="status status--off">…</span>
+        </div>
+        <p id="play-msg" class="msg"></p>
+
+        <div class="block">
+          <h3>Steuerung</h3>
+          <svg class="pad" viewBox="50 14 920 496" role="img" aria-labelledby="pad-title">
+            <title id="pad-title">Belegung des PS5-Controllers</title>
+            <!-- body -->
+            <path class="pad-body" d="M363 130 L637 130 C677 130 699 149 708 182 C723 242 745 318 750 368 C755 411 730 436 699 431 C674 426 659 402 644 377 C627 350 601 338 568 338 L432 338 C399 338 373 350 356 377 C341 402 326 426 301 431 C270 436 245 411 250 368 C255 318 277 242 292 182 C301 149 323 130 363 130 Z"/>
+            <rect class="part" x="414" y="138" width="172" height="96" rx="14"/>
+            <path class="led" d="M405 146 Q399 190 405 234 M595 146 Q601 190 595 234"/>
+            <rect class="part" x="388" y="146" width="8" height="20" rx="4"/>
+            <circle class="part" cx="500" cy="292" r="11"/>
+            <rect class="part" x="488" y="314" width="24" height="7" rx="3.5"/>
+
+            <!-- left side -->
+            <g class="call">
+              <rect class="ctl" x="306" y="84" width="80" height="24" rx="11"/>
+              <polyline points="306,96 240,96"/><circle class="dot" cx="306" cy="96" r="3.5"/>
+              <text x="228" y="91" text-anchor="end"><tspan class="k">L2</tspan><tspan class="a" x="228" dy="19">Rennen</tspan></text>
+            </g>
+            <g class="call">
+              <rect class="ctl" x="310" y="114" width="72" height="12" rx="6"/>
+              <polyline points="310,120 288,146 240,146"/><circle class="dot" cx="310" cy="120" r="3.5"/>
+              <text x="228" y="141" text-anchor="end"><tspan class="k">L1</tspan><tspan class="a" x="228" dy="19">Waffe zurück</tspan></text>
+            </g>
+            <g class="call">
+              <path class="ctl" d="M332 185h16v22h22v16h-22v22h-16v-22h-22v-16h22Z"/>
+              <polyline points="310,215 240,215"/><circle class="dot" cx="310" cy="215" r="3.5"/>
+              <text x="228" y="210" text-anchor="end"><tspan class="k">Steuerkreuz</tspan><tspan class="a" x="228" dy="19">Laufen und drehen</tspan></text>
+            </g>
+            <g class="call">
+              <circle class="ctl" cx="420" cy="290" r="28"/><circle class="stick" cx="420" cy="290" r="18"/>
+              <polyline points="420,318 420,458"/><circle class="dot" cx="420" cy="318" r="3.5"/>
+              <text x="420" y="480" text-anchor="middle"><tspan class="k">Linker Stick</tspan><tspan class="a" x="420" dy="19">Laufen, seitwärts</tspan></text>
+            </g>
+
+            <!-- top -->
+            <g class="call">
+              <rect class="ctl" x="600" y="146" width="8" height="20" rx="4"/>
+              <polyline points="604,146 604,64"/><circle class="dot" cx="604" cy="146" r="3.5"/>
+              <text x="604" y="34" text-anchor="middle"><tspan class="k">Options</tspan><tspan class="a" x="604" dy="19">Menü</tspan></text>
+            </g>
+
+            <!-- right side -->
+            <g class="call">
+              <rect class="ctl" x="614" y="84" width="80" height="24" rx="11"/>
+              <polyline points="694,96 760,96"/><circle class="dot" cx="694" cy="96" r="3.5"/>
+              <text x="772" y="91"><tspan class="k">R2</tspan><tspan class="a" x="772" dy="19">Feuer, mit Rütteln</tspan></text>
+            </g>
+            <g class="call">
+              <rect class="ctl" x="618" y="114" width="72" height="12" rx="6"/>
+              <polyline points="690,120 712,142 760,142"/><circle class="dot" cx="690" cy="120" r="3.5"/>
+              <text x="772" y="137"><tspan class="k">R1</tspan><tspan class="a" x="772" dy="19">Waffe weiter</tspan></text>
+            </g>
+            <g class="call">
+              <circle class="ctl" cx="660" cy="183" r="14"/><path class="sym tri" d="M660 176l6.5 11h-13Z"/>
+              <polyline points="674,183 700,186 760,186"/><circle class="dot" cx="674" cy="183" r="3.5"/>
+              <text x="772" y="181"><tspan class="k">Dreieck</tspan><tspan class="a" x="772" dy="19">Karte</tspan></text>
+            </g>
+            <g class="call">
+              <circle class="ctl" cx="692" cy="215" r="14"/><circle class="sym circ" cx="692" cy="215" r="6"/>
+              <polyline points="706,215 730,230 760,230"/><circle class="dot" cx="706" cy="215" r="3.5"/>
+              <text x="772" y="225"><tspan class="k">Kreis</tspan><tspan class="a" x="772" dy="19">Zurück im Menü</tspan></text>
+            </g>
+            <g class="call">
+              <circle class="ctl" cx="660" cy="247" r="14"/><path class="sym cross" d="M655 242l10 10m0-10-10 10"/>
+              <polyline points="674,247 700,274 760,274"/><circle class="dot" cx="674" cy="247" r="3.5"/>
+              <text x="772" y="269"><tspan class="k">Kreuz</tspan><tspan class="a" x="772" dy="19">Benutzen, im Menü OK</tspan></text>
+            </g>
+            <g class="call">
+              <circle class="ctl" cx="628" cy="215" r="14"/><rect class="sym sq" x="623" y="210" width="10" height="10"/>
+              <polyline points="628,229 648,318 760,318"/><circle class="dot" cx="628" cy="229" r="3.5"/>
+              <text x="772" y="313"><tspan class="k">Quadrat</tspan><tspan class="a" x="772" dy="19">Feuer</tspan></text>
+            </g>
+            <g class="call">
+              <circle class="ctl" cx="580" cy="290" r="28"/><circle class="stick" cx="580" cy="290" r="18"/>
+              <polyline points="580,318 580,458"/><circle class="dot" cx="580" cy="318" r="3.5"/>
+              <text x="580" y="480" text-anchor="middle"><tspan class="k">Rechter Stick</tspan><tspan class="a" x="580" dy="19">Drehen</tspan></text>
+            </g>
+          </svg>
+          <p class="hint">Display antippen beendet DOOM. Die Lichtleiste wird türkis, sobald DOOM den Controller erkannt hat.</p>
+        </div>
+
+        <details id="log-box">
+          <summary>Ausgabe von DOOM</summary>
+          <pre id="log"></pre>
+        </details>
+
+        <footer class="panel-foot">
+          <button class="btn btn-ghost" data-go="1">Zurück</button>
+          <span></span>
+        </footer>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

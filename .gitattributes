@@ -1,0 +1,5 @@
+# Scripts run in Linux/WSL and on the printer: LF, also when checked out on Windows.
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.png binary
+*.woff2 binary

@@ -1,0 +1,13 @@
+# Loaded and built by build.sh
+/download/
+/toolchain/
+/sdl/
+/doomgeneric/
+/doomgeneric.part/
+/wad/
+/build/
+
+# Local
+/.venv/
+/launcher/settings.json
+__pycache__/
