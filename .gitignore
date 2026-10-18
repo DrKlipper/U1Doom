@@ -9,5 +9,6 @@
 
 # Local
 /.venv/
+/.venv-windows/
 /launcher/settings.json
 __pycache__/

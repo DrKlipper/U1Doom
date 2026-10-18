@@ -110,7 +110,7 @@ if [ ! -f sdl/aarch64/lib/libSDL2_mixer.a ]; then (
     export PKG_CONFIG_LIBDIR="$WORK/nopc"   # never pick up this machine's .pc files
     HOST=aarch64-buildroot-linux-gnu
 
-    echo "Baue SDL2 ..."
+    echo "Baue SDL2 (dauert einige Minuten, ohne Ausgabe) ..."
     mkdir "$WORK/sdl2" && cd "$WORK/sdl2"
     "$P/sdl/$SDL/configure" --host=$HOST --prefix="$PREFIX" \
         --enable-static --disable-shared \
@@ -130,7 +130,7 @@ if [ ! -f sdl/aarch64/lib/libSDL2_mixer.a ]; then (
     # SDL_mixer gets the flags from SDL_CFLAGS/SDL_LIBS instead.
     rm -f "$PREFIX/bin/sdl2-config"
 
-    echo "Baue SDL2_mixer ..."
+    echo "Baue SDL2_mixer (dauert einige Minuten, ohne Ausgabe) ..."
     export SDL_CFLAGS="-I$PREFIX/include/SDL2 -D_REENTRANT"
     export SDL_LIBS="-L$PREFIX/lib -lSDL2"
     mkdir "$WORK/mixer" && cd "$WORK/mixer"

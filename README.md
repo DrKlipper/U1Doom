@@ -31,8 +31,23 @@ Unter Windows: das Repository auf einem Windows-Laufwerk auschecken, dort in WSL
 ## Voraussetzungen am U1
 
 - **Root Access** am Touchscreen an (SSH). Ohne Schlüssel meldet sich die Seite mit dem Standardpasswort an.
-- **USB-Bluetooth-Dongle:** Das eingebaute BT ist in der Firmware abgeschaltet. Dongles mit Broadcom- oder CSR-Chip laufen ohne Firmware-Datei, Realtek nicht.
+- **USB-Bluetooth-Stick:** nötig, siehe nächster Abschnitt.
 - **Kein Druck:** Während eines Drucks bleibt DOOM gesperrt.
+
+## Bluetooth-Stick
+
+Ohne USB-Bluetooth-Stick geht es nicht: Das eingebaute Bluetooth des U1 ist in der Firmware abgeschaltet. Der Stick kommt in einen USB-Anschluss des U1.
+
+Entscheidend ist der Chip, nicht die Bluetooth-Version. Viele Sticks brauchen beim Start eine Firmware-Datei vom System, und die bringt der U1 nicht mit.
+
+| Chip im Stick | Läuft? |
+|---|---|
+| CSR (z. B. CSR8510, USB-ID `0a12:0001`) | ja, getestet mit DualSense und JBL Charge 5 gleichzeitig |
+| Broadcom BCM20702 (z. B. ASUS USB-BT400, Plugable USB-BT4LE) | sollte laufen: Treiber im Kernel, startet ohne Firmware-Datei. Nicht getestet |
+| Realtek (fast alle Sticks mit „Bluetooth 5.x“, z. B. TP-Link UB500) | nein, die Firmware-Datei fehlt |
+| MediaTek | nein, der Treiber fehlt im Kernel |
+
+Am einfachsten im Shop nach „CSR8510“ suchen. Bluetooth 4.0 reicht, Controller und Lautsprecher laufen über klassisches Bluetooth. Ob der U1 den Stick erkennt, zeigt Schritt 2 der Seite: Dort steht der Adapter mit seiner Adresse, sonst „Kein Bluetooth-Adapter am Drucker“.
 
 ## Was passiert
 
